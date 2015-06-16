@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     2010-9-23 下午12:38:22                                                        
+
+     Wing    
+     A small and powerful Java class enhance framework.
+                   
+     Chinakite Zhang                                                                
+     ====================================================================== -->
+<ivysettings>
+    <settings defaultResolver="IDEAMOMENT 3rd Library Central" checkUpToDate="true" defaultConflictManager="latest-revision"/>
+    <resolvers>
+        <ibiblio name="IDEAMOMENT 3rd Library Central" m2compatible="true" root="http://localhost:8080/nexus/content/repositories/thirdparty/"/>
+    </resolvers>
+</ivysettings>

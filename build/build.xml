@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     2010-9-23 下午12:38:22                                                        
+
+     Wing    
+     A small and powerful Java class enhance framework.
+                   
+     Chinakite Zhang                                                                
+     ====================================================================== -->
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="Wing" default="default" basedir="../">
+    <description>
+            A small and powerful Java class enhance framework.
+    </description>
+
+	<!-- set global properties for this build -->
+	<property name="src" location="src"/>
+	<property name="test-src" location="test"/>
+	<property name="bin" location="bin"/>
+	<property name="lib" location="lib"/>
+	<property name="test-report"  location="report/test"/>
+	<property name="dist" location="dist"/>
+	<property name="version" value="0.1"/>
+	
+	<!-- set compile classpath -->
+	<path id="compile.classpath">
+		<fileset dir="${lib}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	
+	<target name="init">
+		<mkdir dir="${bin}"/>
+		<mkdir dir="${test-report}"/>
+	</target>
+	
+    <!-- ================================= 
+          target: default              
+         ================================= -->
+    <target name="default" depends="jar" description="--> A small and powerful Java class enhance framework.">
+    </target>
+	
+	<target name="resolve"> 
+		<ivy:configure file="build/ivysettings.xml"/> 
+    </target>
+	
+	<target name="retrive.all" depends="retrive.depends, retrive.test">
+	</target>
+	
+	<target name="retrive.depends" depends="resolve">
+		<ivy:retrieve pattern="lib/[conf]/[artifact]-[revision].[ext]" conf="depends"/>
+	</target>
+	
+	<target name="retrive.test" depends="resolve">
+		<ivy:retrieve pattern="lib/[conf]/[artifact]-[revision].[ext]" conf="test"/>
+	</target>
+
+    <!-- - - - - - - - - - - - - - - - - - 
+          target: jar                      
+         - - - - - - - - - - - - - - - - - -->
+    <target name="jar" depends="test.report">
+    	<jar destfile="${dist}/wing-${version}.jar" basedir="${bin}"/>
+    </target>
+
+	<target name="unit.test" depends="compile, compile.test">
+		<junit haltonerror="false" haltonfailure="false">
+			<classpath>
+				<path refid="compile.classpath"/>
+				<pathelement location="${bin}"/>
+			</classpath>
+			<formatter type="xml" />
+			<batchtest fork="yes" haltonfailure="no" todir="${test-report}">
+	            <fileset dir="${test-src}">
+                	<include name="**/Test*.*"/>
+                </fileset>          
+	    	</batchtest>
+		</junit>
+	</target>
+	
+	<target name="test.report" depends="init, delete.report, unit.test">
+        <delete>
+        	<fileset dir="report"></fileset>
+        </delete>
+		<mkdir dir="${test-report}/html"/>
+        <junitreport todir="${test-report}">
+            <fileset dir="${test-report}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report todir="${test-report}/html"/>
+        </junitreport>
+    </target>
+		
+	<target name="delete.report">
+	    <delete>
+	    	<fileset dir="${test-report}" includes="**/*.*"/>
+	    </delete>
+	</target>
+	
+	<target name="compile">
+	    <javac srcdir="${src}" destdir="${bin}" encoding="UTF-8" classpathref="compile.classpath">
+		</javac>
+	</target>
+	
+	<target name="compile.test">
+	    <javac srcdir="${test-src}" destdir="${bin}" encoding="UTF-8" classpathref="compile.classpath">
+		</javac>
+	</target>
+	
+</project>

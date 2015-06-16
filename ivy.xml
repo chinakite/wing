@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     2010-9-23 下午12:38:22                                                        
+
+     Wing    
+     A small and powerful Java class enhance framework.
+                   
+     Chinakite Zhang                                                                
+     ====================================================================== -->
+<ivy-module version ="2.0"> 
+    <info organisation ="ideamoment" module ="wing"/>
+    
+    <configurations>
+    	<conf name="depends" description="All depends"></conf>
+    	<conf name="test" description="publish with unit test"/>
+    </configurations> 
+    
+    <dependencies>
+        <dependency org="asm" name="asm" rev="3.3" conf="depends->default"/>
+        <dependency org="junit" name="junit" rev="4.6" conf="test->default"/>
+    </dependencies>
+</ivy-module>
